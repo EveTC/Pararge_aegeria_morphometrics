@@ -44,7 +44,7 @@ dim(FW_sizeDF_new)
 
 # Check correlation of explanatory variables
 # look at explan variables
-pairs(~Lat+years.col.10km+mat.10yr+dev.tmp, data=FW_sizeDF_new, upper.panel=NULL, labels = c("Latitude", "Years colonised","T10", "Temp. during development"), pch=16)
+pairs(~Lat+years.col.10km+mat.10yr+dev.tmp, data=FW_sizeDF_new, upper.panel=NULL, labels = c("Latitude", "Years colonised","T10", "Temp. during \n development"), pch=16)
 # export as tiff
 tiff(filename = "./output/Manuscript_figs/pairs_plotr.tiff",
      type="cairo",
@@ -52,15 +52,15 @@ tiff(filename = "./output/Manuscript_figs/pairs_plotr.tiff",
      width=15,
      height=15,
      res=96)
-pairs(~Lat+years.col.10km+mat.10yr+dev.tmp, data=FW_sizeDF_new, upper.panel=NULL, labels = c("Latitude", "Years colonised","T10", "Temp. during development"), pch=16)
+pairs(~Lat+years.col.10km+mat.10yr+dev.tmp, data=FW_sizeDF_new, upper.panel=NULL, labels = c("Latitude", "Years colonised","T10", "Temp. during \n development"), pch=16, cex.labels=4, cex.axis=2, cex=2)
 dev.off()
 
 
 par(mfrow=c(1,1))
 M <- cor(FW_sizeDF_new[c(13,22,36,49)], method="pearson") # ensure these are the correct columns
 # edit names for publication
-colnames(M) <- c("Latitude", "Years colonised", "T10", "Temp. at development")
-rownames(M) <- c("Latitude", "Years colonised", "T10", "Temp. at development")
+colnames(M) <- c("Latitude", "Years colonised", "T10", "Temp. during \n development")
+rownames(M) <- c("Latitude", "Years colonised", "T10", "Temp. during \n development")
 
 corrplot::corrplot(M,method = "number", type="lower")
 
@@ -71,7 +71,8 @@ tiff(filename = "./output/Manuscript_figs/pear_corr.tiff",
      width=15,
      height=15,
      res=96)
-corrplot::corrplot(M,method = "number", type="lower")
+par(cex=2)
+corrplot::corrplot(M,method = "number", type="lower", tl.col = "black")
 dev.off()
 
 # combine these two plots using inkscape for a supplementary figure.
