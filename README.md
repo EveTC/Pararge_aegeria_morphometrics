@@ -1,6 +1,6 @@
 # Pararge_aegeria_morphometrics
 
-This is a repository for the research article entitled "Morphological responses to latitude in a range expanding butterfly". The manuscript has been subm,itted to PeerJ for review.
+This is a repository for the research article entitled "Wing morphological responses to latitude in a range expanding butterfly". The manuscript has been submitted to PeerJ for review.
 
 Authors: Evelyn D Taylor-Cox; Callum Macgregor; Amy Corthine; Jane K. Hill; Jenny A. Hodgson; Ilik Saccheri
 

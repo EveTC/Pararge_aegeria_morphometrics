@@ -44,11 +44,38 @@ dim(FW_sizeDF_new)
 
 # Check correlation of explanatory variables
 # look at explan variables
-pairs(~Csize+Lat+years.col.10km+mat.10yr+dev.tmp+volt_num, data=FW_sizeDF_new, upper.panel=NULL)
+pairs(~Lat+years.col.10km+mat.10yr+dev.tmp, data=FW_sizeDF_new, upper.panel=NULL, labels = c("Latitude", "Years colonised","T10", "Temp. during development"), pch=16)
+# export as tiff
+tiff(filename = "./output/Manuscript_figs/pairs_plotr.tiff",
+     type="cairo",
+     units="in",
+     width=15,
+     height=15,
+     res=96)
+pairs(~Lat+years.col.10km+mat.10yr+dev.tmp, data=FW_sizeDF_new, upper.panel=NULL, labels = c("Latitude", "Years colonised","T10", "Temp. during development"), pch=16)
+dev.off()
+
 
 par(mfrow=c(1,1))
-M <- cor(FW_sizeDF_new[c(12,21,35,41,49)], method="pearson")
+M <- cor(FW_sizeDF_new[c(13,22,36,49)], method="pearson") # ensure these are the correct columns
+# edit names for publication
+colnames(M) <- c("Latitude", "Years colonised", "T10", "Temp. at development")
+rownames(M) <- c("Latitude", "Years colonised", "T10", "Temp. at development")
+
 corrplot::corrplot(M,method = "number", type="lower")
+
+# export as tiff
+tiff(filename = "./output/Manuscript_figs/pear_corr.tiff",
+     type="cairo",
+     units="in",
+     width=15,
+     height=15,
+     res=96)
+corrplot::corrplot(M,method = "number", type="lower")
+dev.off()
+
+# combine these two plots using inkscape for a supplementary figure.
+
 
 # what probabilty best fits my data? ####
 
