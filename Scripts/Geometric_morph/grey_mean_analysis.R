@@ -113,7 +113,7 @@ dim(FW_D_grey_bot3wing.filt3n4_new)
 pairs(~Mean+Lat+mat.10yr+dev.tmp, data=FW_D_grey_wing.filt4_new, upper.panel=NULL)
 
 par(mfrow=c(1,1))
-M <- cor(FW_D_grey_wing.filt4_new[c(5,19,18,55)], method="pearson")
+M <- cor(FW_D_grey_wing.filt4_new[c(5,19,18,55)], method="pearson") # chack columns used here
 corrplot::corrplot(M,method = "number", type="lower")
 
 # normal dist lmmer ####
@@ -201,7 +201,7 @@ dim(FW_V_grey_bot3wing.filt3n4_new)
 pairs(~Mean+Lat+mat.10yr+dev.tmp, data=FW_V_grey_wing.filt4_new, upper.panel=NULL)
 
 par(mfrow=c(1,1))
-M <- cor(FW_V_grey_wing.filt4_new[c(3,16,38,52)], method="pearson")
+M <- cor(FW_V_grey_wing.filt4_new[c(3,16,38,52)], method="pearson") #check columns used here
 corrplot::corrplot(M,method = "number", type="lower")
 
 # normal dist lmmer ####
@@ -287,7 +287,7 @@ dim(HW_D_grey_bot3wing.filt3n4_new)
 pairs(~Mean+Lat+mat.10yr+dev.tmp, data=HW_D_grey_wing.filt4_new, upper.panel=NULL)
 
 par(mfrow=c(1,1))
-M <- cor(HW_D_grey_wing.filt4_new[c(3,16,38,52)], method="pearson")
+M <- cor(HW_D_grey_wing.filt4_new[c(3,16,38,52)], method="pearson") # check columns used here
 corrplot::corrplot(M,method = "number", type="lower")
 
 # normal dist lmmer ####
@@ -381,7 +381,39 @@ hist(HW_V_grey_wing.filt4_new$Mean)
 hist(HW_V_grey_bot3wing.filt4_new$Mean)
 
 
-## Any optimisers that work across all???? ####
+### Run LMMs ####
+
+## FW DORSAL ##
+FW_D_grey_wing_lmer_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km++(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_D_grey_wing.filt4_new)
+summary(FW_D_grey_wing_lmer_reExpGrid_JDiff)
+
+FW_D_grey_bot3wing_lmer_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km++(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_D_grey_bot3wing.filt4_new)
+summary(FW_D_grey_bot3wing_lmer_reExpGrid_JDiff)
+
+## FOREWING VENTRAL ##
+FW_V_grey_wing_lmer_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km++(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_V_grey_wing.filt4_new)
+summary(FW_V_grey_wing_lmer_reExpGrid_JDiff)
+
+FW_V_grey_bot3wing_lmer_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km++(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_V_grey_bot3wing.filt4_new)
+summary(FW_V_grey_bot3wing_lmer_reExpGrid_JDiff)
+
+## HINDWING DORSAL ##
+HW_D_grey_wing_lmer_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km++(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_D_grey_wing.filt4_new)
+summary(HW_D_grey_wing_lmer_reExpGrid_JDiff)
+
+HW_D_grey_bot3wing_lmer_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km++(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_D_grey_bot3wing.filt4_new)
+summary(HW_D_grey_bot3wing_lmer_reExpGrid_JDiff)
+
+## HINDWING VENTRAL ###
+HW_V_grey_wing_lmer_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km++(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_V_grey_wing.filt4_new)
+# model failed to converge
+summary(HW_V_grey_wing_lmer_reExpGrid_JDiff)
+
+HW_V_grey_bot3wing_lmer_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km++(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_V_grey_bot3wing.filt4_new)
+# model failed to converge
+summary(HW_V_grey_bot3wing_lmer_reExpGrid_JDiff)
+
+# Any optimisers that work across all???? ####
 
 ## FOREWING ##
 #Dorsal
@@ -395,20 +427,20 @@ FW_D_filt4_botW_diff_optims <- allFit(FW_D_grey_bot3wing_lmer_reExpGrid_JDiff)
 is.OK <- sapply(FW_D_filt4_botW_diff_optims, is, "merMod")
 FW_D_filt4_botW_diff_optims.OK <- FW_D_filt4_diff_optims[is.OK]
 lapply(FW_D_filt4_botW_diff_optims.OK,function(x) x@optinfo$conv$lme4$messages)
-# all ok - yet default no converge when run
+# all ok
 
 # Ventral
 FW_V_filt4_diff_optims <- allFit(FW_V_grey_wing_lmer_reExpGrid_JDiff)
 is.OK <- sapply(FW_V_filt4_diff_optims, is, "merMod")
 FW_V_filt4_diff_optims.OK <- FW_V_filt4_diff_optims[is.OK]
 lapply(FW_V_filt4_diff_optims.OK,function(x) x@optinfo$conv$lme4$messages)
-# bob,NM,nlmin,nmk
+# all ok
 
 FW_V_filt4_botW_diff_optims <- allFit(FW_V_grey_bot3wing_lmer_reExpGrid_JDiff)
 is.OK <- sapply(FW_V_filt4_botW_diff_optims, is, "merMod")
 FW_V_filt4_botW_diff_optims.OK <- FW_V_filt4_diff_optims[is.OK]
 lapply(FW_V_filt4_botW_diff_optims.OK,function(x) x@optinfo$conv$lme4$messages)
-# bob,NM,nlmin,nmk
+# all ok
 
 ## HINDWING ##
 
@@ -430,46 +462,45 @@ HW_V_filt4_diff_optims <- allFit(HW_V_grey_wing_lmer_reExpGrid_JDiff)
 is.OK <- sapply(HW_V_filt4_diff_optims, is, "merMod")
 HW_V_filt4_diff_optims.OK <- HW_V_filt4_diff_optims[is.OK]
 lapply(HW_V_filt4_diff_optims.OK,function(x) x@optinfo$conv$lme4$messages)
-# all ok
+# singular? - BOB | Nelder_Mead | nlminbwrap 
+# ok = nmkbw
 
 HW_V_filt4_botW_diff_optims <- allFit(HW_V_grey_bot3wing_lmer_reExpGrid_JDiff)
 is.OK <- sapply(HW_V_filt4_botW_diff_optims, is, "merMod")
 HW_V_filt4_botW_diff_optims.OK <- HW_V_filt4_diff_optims[is.OK]
 lapply(HW_V_filt4_botW_diff_optims.OK,function(x) x@optinfo$conv$lme4$messages)
-# all ok
+# singular? - BOB | Nelder_Mead | nlminbwrap 
+# ok = nmkbw
 
-
-### Using bobyqa as optimiser? ####
+### Using nmkbw as optimiser ###
 
 ## FW DORSAL ##
-FW_D_grey_wing_lmer_BOB_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_D_grey_wing.filt4_new, control = lmerControl(optimizer = "bobyqa"))
-summary(FW_D_grey_wing_lmer_BOB_reExpGrid_JDiff)
+FW_D_grey_wing_lmer_nmkbw_reExpGrid_JDiff <- lmer(Mean~mat.10yr+dev.tmp+years.col.10km+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_D_grey_wing.filt4_new, control = lmerControl(optimizer = "nmkbw"))
+summary(FW_D_grey_wing_lmer_nmkbw_reExpGrid_JDiff)
 
-FW_D_grey_bot3wing_lmer_BOB_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_D_grey_bot3wing.filt4_new, control = lmerControl(optimizer = "bobyqa"))
-summary(FW_D_grey_bot3wing_lmer_BOB_reExpGrid_JDiff)
+FW_D_grey_bot3wing_lmer_nmkbw_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_D_grey_bot3wing.filt4_new, control = lmerControl(optimizer = "nmkbw"))
+summary(FW_D_grey_bot3wing_lmer_nmkbw_reExpGrid_JDiff)
 
 ## FOREWING VENTRAL ##
-FW_V_grey_wing_lmer_BOB_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_V_grey_wing.filt4_new, control = lmerControl(optimizer = "bobyqa"))
-summary(FW_V_grey_wing_lmer_BOB_reExpGrid_JDiff)
+FW_V_grey_wing_lmer_nmkbw_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_V_grey_wing.filt4_new, control = lmerControl(optimizer = "nmkbw"))
+summary(FW_V_grey_wing_lmer_nmkbw_reExpGrid_JDiff)
 
-FW_V_grey_bot3wing_lmer_BOB_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_V_grey_bot3wing.filt4_new, control = lmerControl(optimizer = "bobyqa"))
-summary(FW_V_grey_bot3wing_lmer_BOB_reExpGrid_JDiff)
+FW_V_grey_bot3wing_lmer_nmkbw_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=FW_V_grey_bot3wing.filt4_new, control = lmerControl(optimizer = "nmkbw"))
+summary(FW_V_grey_bot3wing_lmer_nmkbw_reExpGrid_JDiff)
 
 ## HINDWING DORSAL ##
-HW_D_grey_wing_lmer_BOB_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_D_grey_wing.filt4_new, control = lmerControl(optimizer = "bobyqa"))
-summary(HW_D_grey_wing_lmer_BOB_reExpGrid_JDiff)
+HW_D_grey_wing_lmer_nmkbw_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_D_grey_wing.filt4_new, control = lmerControl(optimizer = "nmkbw"))
+summary(HW_D_grey_wing_lmer_nmkbw_reExpGrid_JDiff)
 
-HW_D_grey_bot3wing_lmer_BOB_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_D_grey_bot3wing.filt4_new, control = lmerControl(optimizer = "bobyqa"))
-summary(HW_D_grey_bot3wing_lmer_BOB_reExpGrid_JDiff)
+HW_D_grey_bot3wing_lmer_nmkbw_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_D_grey_bot3wing.filt4_new, control = lmerControl(optimizer = "nmkbw"))
+summary(HW_D_grey_bot3wing_lmer_nmkbw_reExpGrid_JDiff)
 
 ## HINDWING VENTRAL ###
-HW_V_grey_wing_lmer_BOB_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_V_grey_wing.filt4_new, control = lmerControl(optimizer = "bobyqa"))
-summary(HW_V_grey_wing_lmer_BOB_reExpGrid_JDiff)
+HW_V_grey_wing_lmer_nmkbw_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_V_grey_wing.filt4_new, control = lmerControl(optimizer = "nmkbw"))
+summary(HW_V_grey_wing_lmer_nmkbw_reExpGrid_JDiff)
 
-HW_V_grey_bot3wing_lmer_BOB_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_V_grey_bot3wing.filt4_new, control = lmerControl(optimizer = "bobyqa"))
-summary(HW_V_grey_bot3wing_lmer_BOB_reExpGrid_JDiff)
-
-
+HW_V_grey_bot3wing_lmer_nmkbw_reExpGrid_JDiff <- lmer(Mean~Lat+mat.10yr+dev.tmp+years.col.10km+(1|Expansion/Grid.10km)+(1|Jday.diff), REML=TRUE, data=HW_V_grey_bot3wing.filt4_new, control = lmerControl(optimizer = "nmkbw"))
+summary(HW_V_grey_bot3wing_lmer_nmkbw_reExpGrid_JDiff)
 
 ## Plot forest plots for FW and HW model on same plot ####
 
