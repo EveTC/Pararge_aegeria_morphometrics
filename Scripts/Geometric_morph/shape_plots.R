@@ -403,9 +403,21 @@ allom_plot + apatheme2 + theme(axis.title = element_text(size = 30), axis.text =
 
 dev.off()
 
+## ANCOVA of allometry between FW and HW ####
+allom_ancova <- aov(Log.Centroid.Size~RegScore1*as.factor(source), data=wings_allom)
+summary(allom_ancova)
+
+fw_lm <- lm(Log.Centroid.Size~RegScore1, data=FW_allom)
+summary(fw_lm)
+
+hw_lm <- lm(Log.Centroid.Size~RegScore1, data=HW_allom)
+summary(hw_lm)
+
+
+
 ## Comparison of 2B-PLS analysis of FW and HW ####
 
-## Plot Block1PLS1 - Block2PLS2 NO GROUP ####
+## Plot Block1PLS1 - Block2PLS1 ####
 PLS_FW_noGr <- read.delim("./MorphoJ/Output_datasets/PLS_FW_allomResid_noGroup scores.txt")
 PLS_HW_noGr <- read.delim("./MorphoJ/Output_datasets/PLS_HW_allomResid_noGroup scores.txt")
 
@@ -418,7 +430,6 @@ PLS_HW_noGr <- PLS_HW_noGr[,-1]
 PLS_noGr <- combine(PLS_FW_noGr, PLS_HW_noGr)
 head(PLS_noGr)
 
-## Block1 PLS- Block2 PLS 1  ####
 wing_names <- c(
   `PLS_FW_noGr` = "Forewing",
   `PLS_HW_noGr` = "Hindwing")
