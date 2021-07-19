@@ -406,7 +406,7 @@ head(PA_overall_rec)
 
 
 ### transform data to SPDFs ####
-ggmap::register_google(key = "AIzaSyAN6Lao2HxKfw9yj7u4Yha_o4RJ-6WCqwE") # insert your hey here
+ggmap::register_google(key = "") # insert your hey here
 ggmap::ggmap_show_api_key()
 
 # download basemap
